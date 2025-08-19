@@ -1,0 +1,6 @@
+{
+    "$schema": "../SimuCore/scripts/simucore_config.schema.json",
+    "sample_frequency": 1,
+    "enable_webserver": true,
+    "log_enabled": false
+}

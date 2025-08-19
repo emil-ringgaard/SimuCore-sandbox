@@ -1,13 +1,13 @@
 // #include <SimuCore/SimuCoreApplication.hpp>
-#include <SimuCore/json.hpp>
-// SimuCoreConfig config;
-// Application application;
+#include <Application.hpp>
+#include <SimuCore/SimuCoreBaseConfig.hpp>
+Application* application = new Application();
 
 void setup() {
-    // config.tick_ms = 10;
-    // application.init();
+    application->init();
 }
 
 void loop() {
-    // application.update();
+    application->startApp();
+    
 }
