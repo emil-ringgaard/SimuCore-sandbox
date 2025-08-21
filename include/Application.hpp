@@ -30,6 +30,9 @@ public:
 	{
 		static int i = 0;
 		output.setValue(i++);
+		output_double.setValue(3.14 * i);
+		std::cout << "Getting value as string: " << output.getValueAsString() << std::endl;
+		std::cout << "Getting value as string: " << output_double.getValueAsString() << std::endl;
 	}
 	void init()
 	{
@@ -38,6 +41,7 @@ public:
 public:
 	AnotherTestComponent testcomp;
 	OutputSignal<int> output;
+	OutputSignal<double> output_double{this, "OutputDouble", 3.14};
 };
 
 class Application : public SimuCoreApplication
