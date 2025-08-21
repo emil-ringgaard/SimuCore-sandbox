@@ -1,13 +1,15 @@
-// #include <SimuCore/SimuCoreApplication.hpp>
 #include <Application.hpp>
 #include <SimuCore/SimuCoreBaseConfig.hpp>
-Application* application = new Application();
+#include <memory>
+#include <iostream>
+Application *application = new Application();
 
-void setup() {
-    application->init();
+void setup()
+{
+	application->initApp();
 }
 
-void loop() {
-    application->startApp();
-    
+void loop()
+{
+	application->run();
 }

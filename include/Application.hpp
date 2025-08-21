@@ -1,63 +1,63 @@
+#pragma once
 #include <SimuCore/SimuCoreApplication.hpp>
+#include <SimuCore/Signal.hpp>
+#include <SimuCore/Binding.hpp>
 #include <iostream>
 
-// Example components
-class Sensor : public Component {
+class AnotherTestComponent : public Component
+{
 public:
-    Signal<int> outValue;
-
-    Sensor(Component* parent = nullptr) : Component(parent) {}
-
-    void update() override {
-        static int counter = 0;
-        outValue.value = ++counter;
-        std::cout << "[Sensor] value = " << outValue.value << "\n";
-    }
+	AnotherTestComponent(Component *parent, std::string name) : Component(parent, name), input(this, "Some input")
+	{
+	}
+	void execute()
+	{
+		std::cout << input.getValue() << std::endl;
+	}
+	void init()
+	{
+	}
+	InputSignal<int> input;
 };
 
-class Controller : public Component {
+class TestComponent : public Component
+{
 public:
-    Signal<int> inValue;
-    Signal<int> outCommand;
+	TestComponent(Component *parent, std::string name) : Component(parent, name), testcomp(this, "TestComponent2"), output(this, "Someoutput")
+	{
+	}
+	void execute()
+	{
+		static int i = 0;
+		output.setValue(i++);
+	}
+	void init()
+	{
+	}
 
-    Controller(Component* parent = nullptr) : Component(parent) {}
-
-    void update() override {
-        outCommand.value = inValue.value;
-        std::cout << "[Controller] outCommand = " << outCommand.value << "\n";
-    }
+public:
+	AnotherTestComponent testcomp;
+	OutputSignal<int> output;
 };
 
-class Actuator : public Component {
-public:
-    Signal<int> inCommand;
-
-    Actuator(Component* parent = nullptr) : Component(parent) {}
-
-    void update() override {
-        std::cout << "[Actuator] received = " << inCommand.value << "\n";
-    }
-};
-
-class Application : public SimuCoreApplication {
-public:
-    Application() : 
-        SimuCoreApplication(),
-        sensor(this),
-        controller(this),
-        actuator(this)
-    {
-       
-    }
-    ~Application(){}
-
-    void init() {
-        controller.bind(sensor.outValue, controller.inValue);
-        actuator.bind(controller.outCommand, actuator.inCommand);
-    }
+class Application : public SimuCoreApplication
+{
 
 public:
-    Sensor sensor;
-    Controller controller;
-    Actuator actuator;
+	Application() : SimuCoreApplication("Custom application name"), testcomp(this, "TestComponent")
+	{
+	}
+	~Application() {}
+
+	void execute()
+	{
+	}
+
+	void bindSignals()
+	{
+		ComponentBinder::bind(testcomp.output, testcomp.testcomp.input);
+	}
+
+public:
+	TestComponent testcomp;
 };
